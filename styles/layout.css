@@ -1,0 +1,157 @@
+.app-shell {
+  width: min(100%, var(--container-max-width));
+  margin-inline: auto;
+  padding: clamp(20px, 3.5vw, 40px) clamp(16px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap);
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas:
+    "hero hero hourly hourly"
+    "hero hero feels humidity"
+    "hero hero wind uv"
+    "forecast forecast solar solar";
+  gap: var(--grid-gap);
+}
+
+.bento-card {
+  position: relative;
+  min-width: 0;
+  padding: var(--card-padding);
+  border-radius: var(--radius-card);
+  background: var(--surface-card-bg);
+  border: 1px solid var(--surface-card-border);
+  box-shadow:
+    var(--surface-card-highlight),
+    0 20px 40px -24px rgba(0, 0, 0, 0.55);
+  backdrop-filter: var(--blur-card);
+  -webkit-backdrop-filter: var(--blur-card);
+  overflow: hidden;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .bento-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--surface-card-border-hover);
+    background: var(--surface-card-bg-hover);
+  }
+}
+
+.bento-card--hero {
+  grid-area: hero;
+  min-height: 360px;
+}
+
+.bento-card--hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 88% 12%,
+    var(--theme-hero-glow) 0%,
+    transparent 56%
+  );
+}
+
+.bento-card--hourly {
+  grid-area: hourly;
+  min-height: 124px;
+}
+
+.bento-card--feels {
+  grid-area: feels;
+  padding: var(--card-padding-compact);
+  min-height: 112px;
+}
+
+.bento-card--humidity {
+  grid-area: humidity;
+  padding: var(--card-padding-compact);
+  min-height: 112px;
+}
+
+.bento-card--wind {
+  grid-area: wind;
+  padding: var(--card-padding-compact);
+  min-height: 112px;
+}
+
+.bento-card--uv {
+  grid-area: uv;
+  padding: var(--card-padding-compact);
+  min-height: 112px;
+}
+
+.bento-card--forecast {
+  grid-area: forecast;
+  min-height: 220px;
+}
+
+.bento-card--solar {
+  grid-area: solar;
+  min-height: 220px;
+}
+
+.card-label {
+  display: inline-block;
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-label);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tablet: 520px – 900px */
+@media (max-width: 900px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "hero hero"
+      "hourly hourly"
+      "feels humidity"
+      "wind uv"
+      "forecast forecast"
+      "solar solar";
+  }
+
+  .bento-card--hero {
+    min-height: 300px;
+  }
+}
+
+/* Mobile: < 520px */
+@media (max-width: 519px) {
+  .bento-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "hero"
+      "hourly"
+      "feels"
+      "humidity"
+      "wind"
+      "uv"
+      "forecast"
+      "solar";
+  }
+
+  .bento-card {
+    padding: 20px;
+  }
+
+  .bento-card--hero {
+    min-height: 260px;
+  }
+}

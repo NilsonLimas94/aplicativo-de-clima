@@ -1,0 +1,46 @@
+:root {
+  /* Tipografia */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --text-hero: clamp(4.5rem, 8vw, 6.5rem);
+  --text-city: clamp(1.5rem, 2.4vw, 2.125rem);
+  --text-metric: clamp(1.5rem, 2.2vw, 2rem);
+  --text-label: 0.75rem;
+
+  /* Cores de texto */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-label: #94a3b8;
+
+  /* Superfície Glassmorphism */
+  --surface-card-bg: rgba(255, 255, 255, 0.06);
+  --surface-card-bg-hover: rgba(255, 255, 255, 0.08);
+  --surface-subcard-bg: rgba(255, 255, 255, 0.04);
+  --surface-card-border: rgba(255, 255, 255, 0.12);
+  --surface-card-border-hover: rgba(255, 255, 255, 0.24);
+  --surface-card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --surface-divider: rgba(255, 255, 255, 0.1);
+  --surface-track: rgba(255, 255, 255, 0.14);
+  --blur-card: blur(16px);
+
+  /* Raios e Espaçamento */
+  --radius-card: 24px;
+  --radius-subcard: 16px;
+  --radius-pill: 9999px;
+  --grid-gap: 20px;
+  --card-padding: 24px;
+  --card-padding-compact: 20px;
+  --container-max-width: 1120px;
+
+  /* Movimento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-medium: 320ms;
+  --duration-theme: 600ms;
+
+  /* Fallback do tema ativo (sobrescrito por data-theme) */
+  --theme-bg-start: #0f172a;
+  --theme-bg-end: #1e293b;
+  --theme-accent: #fbbf24;
+  --theme-accent-soft: rgba(251, 191, 36, 0.18);
+  --theme-hero-glow: rgba(251, 191, 36, 0.22);
+}

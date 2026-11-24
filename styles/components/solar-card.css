@@ -1,0 +1,120 @@
+.solar-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.solar-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.solar-card__phase {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.solar-card__phase:empty {
+  display: none;
+}
+
+.solar-card__chart {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 112px;
+}
+
+.solar-arc {
+  width: 100%;
+  height: auto;
+  max-height: 148px;
+  overflow: visible;
+}
+
+.solar-arc__track {
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 2;
+  stroke-dasharray: 5 6;
+  stroke-linecap: round;
+}
+
+.solar-arc__elapsed {
+  stroke: rgba(248, 250, 252, 0.85);
+  stroke-width: 2.2;
+  stroke-dasharray: 5 6;
+  stroke-linecap: round;
+}
+
+.solar-arc__horizon {
+  stroke: var(--surface-divider);
+  stroke-width: 1;
+}
+
+.solar-arc__arrow {
+  fill: rgba(255, 255, 255, 0.35);
+}
+
+.solar-arc__sun {
+  color: var(--theme-accent);
+  transition: opacity var(--duration-medium) var(--ease-out);
+}
+
+.solar-arc__sun[data-daytime="false"] {
+  opacity: 0.6;
+}
+
+.solar-arc__sun-glow {
+  fill: var(--theme-accent);
+  opacity: 0.24;
+  filter: blur(5px);
+}
+
+.solar-arc__sun-core {
+  fill: var(--theme-accent);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--theme-accent) 70%, transparent));
+}
+
+.solar-arc__sun-rays {
+  stroke: color-mix(in srgb, var(--theme-accent) 85%, white 15%);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.solar-card__times {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.solar-card__endpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.solar-card__endpoint--end {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.solar-card__endpoint-label {
+  font-size: 0.75rem;
+  color: var(--color-text-label);
+}
+
+.solar-card__endpoint-time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}

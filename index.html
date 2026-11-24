@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="sunny">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Clima — Bento Grid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./styles/main.css">
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar" data-top-bar aria-label="Controles de localização e unidade">
+      <div class="top-bar__row">
+        <div class="top-bar__search-group">
+          <search>
+            <form class="search-pill" data-search-form role="search" aria-label="Buscar cidade">
+              <svg
+                class="search-pill__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+              <label class="sr-only" for="city-search">Buscar cidade</label>
+              <input
+                id="city-search"
+                class="search-pill__input"
+                type="search"
+                name="query"
+                data-search-input
+                placeholder="Buscar cidade..."
+                autocomplete="off"
+                enterkeyhint="search"
+              >
+            </form>
+          </search>
+
+          <button
+            type="button"
+            class="geo-button"
+            data-geo-button
+            aria-label="Usar minha localização atual"
+            title="Usar minha localização atual"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 2v3"></path>
+              <path d="M12 19v3"></path>
+              <path d="M2 12h3"></path>
+              <path d="M19 12h3"></path>
+              <circle cx="12" cy="12" r="5"></circle>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <fieldset class="unit-switch" data-unit-switch>
+          <legend class="sr-only">Unidade de temperatura</legend>
+
+          <input
+            class="unit-switch__input"
+            type="radio"
+            name="temperature-unit"
+            id="unit-c"
+            value="C"
+            checked
+          >
+          <label class="unit-switch__label" for="unit-c">°C</label>
+
+          <input
+            class="unit-switch__input"
+            type="radio"
+            name="temperature-unit"
+            id="unit-f"
+            value="F"
+          >
+          <label class="unit-switch__label" for="unit-f">°F</label>
+        </fieldset>
+      </div>
+
+      <p class="top-bar__feedback" data-top-bar-feedback role="status" aria-live="polite"></p>
+    </header>
+
+    <section class="error-state" data-error-state role="alert" hidden>
+      <h1 class="error-state__title">Não foi possível carregar o clima</h1>
+      <p class="error-state__message" data-error-message></p>
+      <button type="button" class="error-state__action" data-retry-button>Tentar novamente</button>
+    </section>
+
+    <main class="bento-grid" data-bento-grid data-state="loading" aria-busy="true" aria-label="Painel climático">
+      <section class="bento-card bento-card--hero hero-card" data-hero-card aria-label="Clima atual">
+        <div class="skeleton-layer" aria-hidden="true">
+          <div class="skeleton-row">
+            <div class="skeleton-stack" style="width: 62%;">
+              <span class="skeleton-block" style="width: 78%; height: 28px;"></span>
+              <span class="skeleton-block" style="width: 58%; height: 16px;"></span>
+            </div>
+            <span class="skeleton-block skeleton-block--pill" style="width: 74px; height: 28px;"></span>
+          </div>
+          <div class="skeleton-row">
+            <span class="skeleton-block" style="width: 148px; height: 84px;"></span>
+            <span class="skeleton-block skeleton-block--circle" style="width: 96px; height: 96px;"></span>
+          </div>
+          <span class="skeleton-block" style="width: 46%; height: 22px;"></span>
+        </div>
+
+        <div class="hero-card__header">
+          <div class="hero-card__place">
+            <div class="hero-card__title-row">
+              <h1 class="hero-card__location" data-hero-location>—</h1>
+              <span class="hero-card__country" data-hero-country></span>
+            </div>
+            <time class="hero-card__date" data-hero-date></time>
+          </div>
+          <span class="hero-card__badge">Agora</span>
+        </div>
+
+        <div class="hero-card__main">
+          <p class="hero-card__temp tabular" data-hero-temp>--°</p>
+          <div class="hero-card__icon-slot" data-hero-icon></div>
+        </div>
+
+        <p class="hero-card__condition" data-hero-condition>—</p>
+      </section>
+
+      <section class="bento-card bento-card--hourly hourly-card" data-hourly-card aria-labelledby="hourly-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 120px; height: 12px;"></span>
+          <div class="skeleton-hourly-grid">
+            <span class="skeleton-block"></span>
+            <span class="skeleton-block"></span>
+            <span class="skeleton-block"></span>
+            <span class="skeleton-block"></span>
+            <span class="skeleton-block"></span>
+          </div>
+        </div>
+
+        <h2 id="hourly-heading" class="card-label">Previsão Horária</h2>
+        <ol class="hourly-list" data-hourly-list></ol>
+      </section>
+
+      <article class="bento-card bento-card--feels metric-card" aria-labelledby="feels-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 92px; height: 12px;"></span>
+          <span class="skeleton-block" style="width: 64px; height: 30px;"></span>
+          <span class="skeleton-block" style="width: 82%; height: 14px;"></span>
+        </div>
+
+        <h2 id="feels-heading" class="card-label">Sensação Térmica</h2>
+        <p class="metric-card__value tabular" data-feels-value>--°</p>
+        <p class="metric-card__context" data-feels-context>—</p>
+      </article>
+
+      <article class="bento-card bento-card--humidity metric-card" aria-labelledby="humidity-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 72px; height: 12px;"></span>
+          <span class="skeleton-block" style="width: 76px; height: 30px;"></span>
+          <span class="skeleton-block skeleton-block--pill" style="width: 100%; height: 6px;"></span>
+        </div>
+
+        <h2 id="humidity-heading" class="card-label">Umidade</h2>
+        <p class="metric-card__value tabular" data-humidity-value>--%</p>
+        <div
+          class="metric-meter"
+          data-humidity-meter
+          role="meter"
+          aria-labelledby="humidity-heading"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div class="metric-meter__fill"></div>
+        </div>
+      </article>
+
+      <article class="bento-card bento-card--wind metric-card" aria-labelledby="wind-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 58px; height: 12px;"></span>
+          <div class="skeleton-row">
+            <div class="skeleton-stack" style="width: 60%;">
+              <span class="skeleton-block" style="width: 84px; height: 28px;"></span>
+              <span class="skeleton-block" style="width: 96px; height: 14px;"></span>
+            </div>
+            <span class="skeleton-block skeleton-block--circle" style="width: 44px; height: 44px;"></span>
+          </div>
+        </div>
+
+        <h2 id="wind-heading" class="card-label">Vento</h2>
+        <div class="metric-card--wind-layout">
+          <div class="metric-card__wind-info">
+            <p class="metric-card__value-row">
+              <span class="metric-card__value tabular" data-wind-speed>--</span>
+              <span class="metric-card__unit">km/h</span>
+            </p>
+            <p class="metric-card__context tabular" data-wind-direction>—</p>
+          </div>
+
+          <svg
+            class="wind-compass"
+            viewBox="0 0 48 48"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-opacity="0.28" stroke-width="1.5" />
+            <g stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round">
+              <line x1="24" y1="6.5" x2="24" y2="9.5" />
+              <line x1="24" y1="38.5" x2="24" y2="41.5" />
+              <line x1="6.5" y1="24" x2="9.5" y2="24" />
+              <line x1="38.5" y1="24" x2="41.5" y2="24" />
+            </g>
+            <g class="wind-compass__needle" data-wind-needle>
+              <polygon points="24,11 27.5,24 24,21.5 20.5,24" fill="var(--theme-accent)" />
+              <polygon points="24,37 27.5,24 24,26.5 20.5,24" fill="currentColor" fill-opacity="0.45" />
+            </g>
+            <circle cx="24" cy="24" r="2" fill="var(--color-text-primary)" />
+          </svg>
+        </div>
+      </article>
+
+      <article class="bento-card bento-card--uv metric-card" aria-labelledby="uv-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 72px; height: 12px;"></span>
+          <span class="skeleton-block" style="width: 94px; height: 30px;"></span>
+          <span class="skeleton-block skeleton-block--pill" style="width: 100%; height: 6px;"></span>
+        </div>
+
+        <h2 id="uv-heading" class="card-label">Índice UV</h2>
+        <p class="metric-card__value-row">
+          <span class="metric-card__value tabular" data-uv-value>--</span>
+          <span class="metric-card__qualifier" data-uv-classification>—</span>
+        </p>
+        <div
+          class="metric-meter"
+          data-uv-meter
+          role="meter"
+          aria-labelledby="uv-heading"
+          aria-valuemin="0"
+          aria-valuemax="11"
+          aria-valuenow="0"
+        >
+          <div class="metric-meter__fill"></div>
+        </div>
+        <p class="metric-card__context tabular" data-uv-peak>—</p>
+      </article>
+
+      <section class="bento-card bento-card--forecast daily-card" data-daily-card aria-labelledby="daily-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 132px; height: 12px;"></span>
+          <div class="skeleton-daily-list">
+            <span class="skeleton-block" style="width: 100%; height: 22px;"></span>
+            <span class="skeleton-block" style="width: 100%; height: 22px;"></span>
+            <span class="skeleton-block" style="width: 100%; height: 22px;"></span>
+            <span class="skeleton-block" style="width: 100%; height: 22px;"></span>
+            <span class="skeleton-block" style="width: 100%; height: 22px;"></span>
+          </div>
+        </div>
+
+        <div class="daily-card__top">
+          <h2 id="daily-heading" class="card-label">Previsão de 5 Dias</h2>
+        </div>
+
+        <div class="daily-header" aria-hidden="true">
+          <span class="daily-header__min">Mín</span>
+          <span class="daily-header__scale">Amplitude semanal</span>
+          <span class="daily-header__max">Máx</span>
+        </div>
+
+        <ol class="daily-list" data-daily-list></ol>
+      </section>
+
+      <section class="bento-card bento-card--solar solar-card" data-solar-card aria-labelledby="solar-heading">
+        <div class="skeleton-layer" aria-hidden="true">
+          <span class="skeleton-block" style="width: 96px; height: 12px;"></span>
+          <span class="skeleton-block skeleton-solar-arc"></span>
+          <div class="skeleton-row">
+            <span class="skeleton-block" style="width: 64px; height: 26px;"></span>
+            <span class="skeleton-block" style="width: 64px; height: 26px;"></span>
+          </div>
+        </div>
+
+        <div class="solar-card__header">
+          <h2 id="solar-heading" class="card-label">Ciclo Solar</h2>
+          <span class="solar-card__phase" data-solar-phase></span>
+        </div>
+        <p class="sr-only" data-solar-summary></p>
+
+        <div class="solar-card__chart">
+          <svg
+            class="solar-arc"
+            viewBox="0 0 360 148"
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <clipPath id="solar-elapsed-clip">
+                <rect x="0" y="0" width="0" height="148" data-solar-clip-rect />
+              </clipPath>
+            </defs>
+
+            <line class="solar-arc__horizon" x1="16" y1="132" x2="344" y2="132" />
+
+            <path
+              class="solar-arc__track"
+              data-solar-arc
+              d="M 24 132 Q 180 -6 336 132"
+            />
+
+            <path
+              class="solar-arc__elapsed"
+              d="M 24 132 Q 180 -6 336 132"
+              clip-path="url(#solar-elapsed-clip)"
+            />
+
+            <polygon class="solar-arc__arrow" points="338,134 331,124 328,131" />
+
+            <g class="solar-arc__sun" data-solar-marker transform="translate(24 132)">
+              <circle class="solar-arc__sun-glow" cx="0" cy="0" r="15" />
+              <g class="solar-arc__sun-rays">
+                <line x1="0" y1="-11" x2="0" y2="-8.5" />
+                <line x1="0" y1="8.5" x2="0" y2="11" />
+                <line x1="-11" y1="0" x2="-8.5" y2="0" />
+                <line x1="8.5" y1="0" x2="11" y2="0" />
+                <line x1="-7.8" y1="-7.8" x2="-6" y2="-6" />
+                <line x1="6" y1="6" x2="7.8" y2="7.8" />
+                <line x1="7.8" y1="-7.8" x2="6" y2="-6" />
+                <line x1="-6" y1="6" x2="-7.8" y2="7.8" />
+              </g>
+              <circle class="solar-arc__sun-core" cx="0" cy="0" r="6" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="solar-card__times">
+          <div class="solar-card__endpoint">
+            <span class="solar-card__endpoint-label">Nascer do sol</span>
+            <time class="solar-card__endpoint-time tabular" data-solar-sunrise>--:--</time>
+          </div>
+
+          <div class="solar-card__endpoint solar-card__endpoint--end">
+            <span class="solar-card__endpoint-label">Pôr do sol</span>
+            <time class="solar-card__endpoint-time tabular" data-solar-sunset>--:--</time>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
